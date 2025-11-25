@@ -69,24 +69,24 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
-    @Bean
-    public CommandLineRunner initData(UserDetailsService userDetailsService) {
-        return args -> {
-            JdbcUserDetailsManager manager = (JdbcUserDetailsManager) userDetailsService;
-            UserDetails user1 = User.withUsername("username1")
-                    .password(passwordEncoder().encode("abc123"))
-                    .roles("USER")
-                    .build();
-            UserDetails admin = User.withUsername("newUsername")
-                    .password(passwordEncoder().encode("xyz789"))
-                    .roles("ADMIN")
-                    .build();
-
-            JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-            userDetailsManager.createUser(user1);
-            userDetailsManager.createUser(admin);
-        };
-    }
+//    @Bean
+//    public CommandLineRunner initData(UserDetailsService userDetailsService) {
+//        return args -> {
+//            JdbcUserDetailsManager manager = (JdbcUserDetailsManager) userDetailsService;
+//            UserDetails user1 = User.withUsername("username1")
+//                    .password(passwordEncoder().encode("abc123"))
+//                    .roles("USER")
+//                    .build();
+//            UserDetails admin = User.withUsername("newUsername")
+//                    .password(passwordEncoder().encode("xyz789"))
+//                    .roles("ADMIN")
+//                    .build();
+//
+//            JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
+//            userDetailsManager.createUser(user1);
+//            userDetailsManager.createUser(admin);
+//        };
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

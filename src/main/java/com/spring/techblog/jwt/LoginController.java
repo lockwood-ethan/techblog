@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class LoginController {
 
     @Autowired
-    private JwtTokenUtil jwtUtils;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private AuthenticationManager authenticationManager;

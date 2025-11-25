@@ -14,14 +14,11 @@ import javax.crypto.SecretKey;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 @Component
-public class JwtTokenUtil implements Serializable {
+public class JwtUtils implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${spring.app.jwtSecret}")
     private String jwtSecret;
