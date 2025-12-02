@@ -1,12 +1,14 @@
 package com.spring.techblog.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
 public class Authorities {
 
-    @Id
+    @Id()
+    @Column(unique = true)
     private String username;
 
     private String authority;
