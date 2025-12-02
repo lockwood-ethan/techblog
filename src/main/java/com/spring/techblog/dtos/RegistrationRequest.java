@@ -1,14 +1,8 @@
-package com.spring.techblog.jwt;
+package com.spring.techblog.dtos;
 
-public class LoginRequest {
+public class RegistrationRequest {
     private String username;
-
     private String password;
-
-    public LoginRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username;
