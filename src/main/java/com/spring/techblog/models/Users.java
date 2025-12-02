@@ -1,9 +1,11 @@
 package com.spring.techblog.models;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Value;
 
 @Entity
-public class User {
+public class Users {
 
     @Id
     @Column(unique = true)
@@ -15,12 +17,17 @@ public class User {
     @Column
     private boolean enabled;
 
-    protected User() {}
+    @Column
+    @Nonnull
+    private String role;
 
-    public User(String username, String password, boolean enabled) {
+    protected Users() {}
+
+    public Users(String username, String password, boolean enabled, String role) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
+        this.role = role;
     }
 
     public String getUsername() {
@@ -45,5 +52,13 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
