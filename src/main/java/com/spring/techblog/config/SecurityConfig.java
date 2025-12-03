@@ -45,7 +45,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(HttpMethod.GET, "/posts", "/posts/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/posts", "/posts/**", "/comments/**", "/comments/comment/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(
