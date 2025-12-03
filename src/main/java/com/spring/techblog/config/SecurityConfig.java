@@ -22,6 +22,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
 
 import javax.sql.DataSource;
 
@@ -44,8 +45,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
-                        .anyRequest().authenticated());
+                .requestMatchers(HttpMethod.GET, "/posts", "/posts/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+                .anyRequest().authenticated());
         http.sessionManagement(
                 session ->
                         session.sessionCreationPolicy(
