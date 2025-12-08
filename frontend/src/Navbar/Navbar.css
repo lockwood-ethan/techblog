@@ -3,14 +3,14 @@
     background-color: rgb(24, 24, 24);
 }
 
-#searchTextBox::placeholder {
+#searchTextBox::placeholder, #navUsernameTextBox::placeholder, #navPasswordTextBox::placeholder {
     color: rgb(87, 87, 87);
 }
 
-#searchTextBox {
+#searchTextBox, #navUsernameTextBox, #navPasswordTextBox {
     background-color: rgb(32, 32, 32);
 }
 
-#navSearchButton {
+#navSearchButton, #navSignInButton, #navRegisterButton, #navSubmitButton {
     background-color: rgb(32, 32, 32);
 }
