@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="12568b44-528d-4f04-aada-aa2f23cf1741" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/TechblogApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/controllers/CommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/controllers/PostController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/controllers/RegistrationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/dtos/RegistrationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/AuthEntryPointJwt.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/AuthTokenFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/JwtUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/LoginController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/LoginRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/jwt/LoginResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/models/Authorities.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/models/Comment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/models/Post.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/models/Users.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/repositories/AuthoritiesRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/repositories/CommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/repositories/PostRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/spring/techblog/repositories/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/spring/techblog/TechblogApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HttpClientEndpointsTabState">
+    <option name="cachedRequestData" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;21662a05a140308e2d48485bcaea3e2cdfda9b85&quot; value=&quot;###&amp;#10;POST http://localhost:8081/register&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
+  </component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="downloadAnnotationsAutomatically" value="true" />
+        <option name="downloadDocsAutomatically" value="true" />
+        <option name="downloadSourcesAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="35ovLuArPzpqc9QTYnGMbArctLq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.TechblogApplication.executor": "Run",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/bashthestampede/dev/techblog/backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
+    <layout>
+      <window_info id="Bookmarks" side_tool="true" />
+      <window_info id="Merge Requests" />
+      <window_info id="Backup and Sync History" />
+      <window_info id="Commit_Guest" show_stripe_button="false" />
+      <window_info id="Pull Requests" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.50057733" visible="true" weight="0.16503906" />
+      <window_info id="Commit" order="1" weight="0.12281977" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info id="Learn" order="3" weight="0.12281977" />
+      <window_info id="ORM" order="4" sideWeight="0.49942264" side_tool="true" weight="0.12281977" />
+      <window_info anchor="bottom" id="TypeScript" />
+      <window_info anchor="bottom" id="Profiler" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="File Transfer" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="Problems" order="1" />
+      <window_info anchor="bottom" id="Problems View" order="2" weight="0.32987106" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32987106" />
+      <window_info anchor="bottom" id="Services" order="4" weight="0.32987106" />
+      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.31006944" />
+      <window_info anchor="bottom" id="Build" order="6" weight="0.32987106" />
+      <window_info anchor="bottom" id="Database Changes" order="7" weight="0.32987106" />
+      <window_info anchor="bottom" id="Find" order="8" weight="0.32987106" />
+      <window_info anchor="right" id="PR AI Assistant" />
+      <window_info anchor="right" id="documentation.v2" show_stripe_button="false" side_tool="true" />
+      <window_info anchor="right" id="Notifications" order="0" weight="0.3300872" />
+      <window_info anchor="right" id="AIAssistant" order="1" weight="0.3300872" />
+      <window_info anchor="right" id="Database" order="2" weight="0.32994187" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.32994187" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32994187" />
+      <window_info anchor="right" id="Beans" order="6" weight="0.32994187" />
+      <window_info anchor="right" id="Endpoints" order="7" weight="0.32974386" />
+    </layout>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="TechblogApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="techblog" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.spring.techblog.TechblogApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.28" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.28" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="12568b44-528d-4f04-aada-aa2f23cf1741" name="Changes" comment="" />
+      <created>1763789185495</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1763789185495</updated>
+      <workItem from="1763789186708" duration="1375000" />
+      <workItem from="1763792666205" duration="1662000" />
+      <workItem from="1763794550502" duration="12776000" />
+      <workItem from="1763846808041" duration="3364000" />
+      <workItem from="1764014131699" duration="4747000" />
+      <workItem from="1764102699493" duration="439000" />
+      <workItem from="1764623186456" duration="13748000" />
+      <workItem from="1764673113180" duration="42404000" />
+      <workItem from="1764775091687" duration="10765000" />
+      <workItem from="1764940806835" duration="3143000" />
+      <workItem from="1765158362302" duration="515000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
