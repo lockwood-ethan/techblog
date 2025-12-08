@@ -1,0 +1,16 @@
+#homeNav {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: rgb(24, 24, 24);
+}
+
+#searchTextBox::placeholder {
+    color: rgb(87, 87, 87);
+}
+
+#searchTextBox {
+    background-color: rgb(32, 32, 32);
+}
+
+#navSearchButton {
+    background-color: rgb(32, 32, 32);
+}
