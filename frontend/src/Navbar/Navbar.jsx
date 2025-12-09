@@ -7,18 +7,18 @@ function Navbar() {
         <div className="container-fluid">
             <div className="container-fluid row align-items-center">
                 <div className="col-md-auto">
-                    <a className="navbar-brand text-light" href="http://localhost:5173">
+                    <a className="navbar-brand text-light" href="#">
                         <img className="d-inline-flex mx-2 rounded-5 align-text-center" src="src/assets/studyingProgrammer.png" height="60" alt="logo"></img>
                         Techn(olog)ically A Failure &#123;Blog&#125;
                     </a>
                 </div>
-                <div className="col-md-auto align-self-end lh-1">
+                <div className="col-md-auto lh-1">
                     <ul className="nav nav-tabs">
                         <li className="nav-item">
-                            <a className="nav-link text-light" href="#">Placeholder</a>
+                            <a className="nav-link text-light" href="#">Home</a>
                         </li>
                         <li className="nav-item mx-1">
-                            <a className="nav-link text-light" href="#">Placeholder</a>
+                            <a className="nav-link text-light" href="#">Archive</a>
                         </li>
                     </ul>
                 </div>
