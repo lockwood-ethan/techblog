@@ -3,19 +3,13 @@ package com.spring.techblog.jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/auth")
 public class LoginController {
 
     @Autowired
@@ -30,18 +25,6 @@ public class LoginController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/user")
-    public String userEndpoint() {
-        return "Hello, User!";
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/admin")
-    public String adminEndpoint() {
-        return "Hello, Admin!";
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -60,14 +43,28 @@ public class LoginController {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
+        String jwtAccessToken = jwtUtils.generateAccessTokenFromUsername(userDetails.getUsername());
+
+        String jwtRefreshToken = jwtUtils.generateRefreshTokenFromUsername(userDetails.getUsername());
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        LoginResponse response = new LoginResponse(userDetails.getUsername(), roles, jwtToken);
+        LoginResponse response = new LoginResponse(userDetails.getUsername(), roles, jwtAccessToken, jwtRefreshToken);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        String refreshToken = refreshTokenRequest.getRefreshToken();
+        if (jwtUtils.validateToken(refreshToken)) {
+            String username = jwtUtils.getUserNameFromJwtToken(refreshToken);
+            String newAccessToken = jwtUtils.generateAccessTokenFromUsername(username);
+            RefreshTokenResponse response = new RefreshTokenResponse(newAccessToken);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(403).body("Invalid refresh token");
     }
 }

@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers(HttpMethod.GET, "/posts", "/posts/**", "/comments/**", "/comments/comment/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/register", "/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/register", "/auth/login", "/auth/refresh").permitAll()
                 .anyRequest().authenticated());
         http.sessionManagement(
                 session ->

@@ -3,24 +3,30 @@ package com.spring.techblog.jwt;
 import java.util.List;
 
 public class LoginResponse {
-    private String jwtToken;
+    private String jwtAccessToken;
+    private String jwtRefreshToken;
 
     private String username;
     private List<String> roles;
 
-    public LoginResponse(String username, List<String> roles, String jwtToken) {
+    public LoginResponse(String username, List<String> roles, String jwtAccessToken, String jwtRefreshToken) {
         this.username = username;
         this.roles = roles;
-        this.jwtToken = jwtToken;
+        this.jwtAccessToken = jwtAccessToken;
+        this.jwtRefreshToken = jwtRefreshToken;
     }
 
-    public String getJwtToken() {
-        return jwtToken;
+    public String getJwtAccessToken() {
+        return jwtAccessToken;
     }
 
-    public void setJwtToken(String jwtToken) {
-        this.jwtToken = jwtToken;
+    public void setJwtAccessToken(String jwtAccessToken) {
+        this.jwtAccessToken = jwtAccessToken;
     }
+
+    public String getJwtRefreshToken() { return jwtRefreshToken; }
+
+    public void setJwtRefreshToken(String jwtRefreshToken) { this.jwtRefreshToken = jwtRefreshToken; }
 
     public String getUsername() {
         return username;

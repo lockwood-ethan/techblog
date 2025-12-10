@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
@@ -78,12 +77,13 @@ public class RegistrationController {
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateTokenFromUsername(userDetails);
+        String jwtAccessToken= jwtUtils.generateAccessTokenFromUsername(userDetails.getUsername());
+        String jwtRefreshToken = jwtUtils.generateRefreshTokenFromUsername(userDetails.getUsername());
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        LoginResponse response = new LoginResponse(userDetails.getUsername(), roles, jwt);
+        LoginResponse response = new LoginResponse(userDetails.getUsername(), roles, jwtAccessToken, jwtRefreshToken);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

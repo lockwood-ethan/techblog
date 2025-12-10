@@ -23,8 +23,11 @@ public class JwtUtils implements Serializable {
     @Value("${spring.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${spring.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    @Value("${spring.app.jwtAccessExpirationMs}")
+    private int jwtAccessExpirationMs;
+
+    @Value("${spring.app.jwtRefreshExpirationMs}")
+    private int jwtRefreshExpirationMs;
 
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -34,12 +37,20 @@ public class JwtUtils implements Serializable {
         return null;
     }
 
-    public String generateTokenFromUsername(UserDetails userDetails) {
-        String username = userDetails.getUsername();
+    public String generateAccessTokenFromUsername(String username) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .expiration(new Date((new Date()).getTime() + jwtAccessExpirationMs))
+                .signWith(key())
+                .compact();
+    }
+
+    public String generateRefreshTokenFromUsername(String username) {
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtRefreshExpirationMs))
                 .signWith(key())
                 .compact();
     }
