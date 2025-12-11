@@ -1,7 +1,9 @@
 package com.spring.techblog.controllers;
 
 import com.spring.techblog.models.Post;
+import com.spring.techblog.models.Users;
 import com.spring.techblog.repositories.PostRepository;
+import com.spring.techblog.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +24,11 @@ import java.util.UUID;
 public class PostController {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostController(PostRepository postRepository) {
+    public PostController(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{requestedId}")
@@ -49,31 +53,41 @@ public class PostController {
 
     @PostMapping
     private ResponseEntity<Void> createPost(@RequestBody Post newPostRequest, UriComponentsBuilder ucb, Principal principal) {
-        Post postWithOwner = new Post(null, newPostRequest.getTitle(), newPostRequest.getBody(), principal.getName(), Instant.now(), Instant.now());
-        Post savedPost = postRepository.save(postWithOwner);
-        URI locationOfNewPost = ucb
-                .path("/posts/{id}")
-                .buildAndExpand(savedPost.getId())
-                .toUri();
-        return ResponseEntity.created(locationOfNewPost).build();
+        Optional<Users> user = userRepository.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            Post postWithOwner = new Post(null, newPostRequest.getTitle(), newPostRequest.getBody(), user.get(), Instant.now(), Instant.now());
+            Post savedPost = postRepository.save(postWithOwner);
+            URI locationOfNewPost = ucb
+                    .path("/posts/{id}")
+                    .buildAndExpand(savedPost.getId())
+                    .toUri();
+            return ResponseEntity.created(locationOfNewPost).build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("/{requestedId}")
     private ResponseEntity<Void> updatePost(@PathVariable UUID requestedId, @RequestBody Post postUpdateRequest, Principal principal) {
-        Post post = postRepository.findByIdAndOwner(requestedId, principal.getName());
-        if (post != null) {
-            Post updatedPost = new Post(post.getId(), postUpdateRequest.getTitle(), postUpdateRequest.getBody(), principal.getName(), post.getCreatedDate(), Instant.now());
-            postRepository.save(updatedPost);
-            return ResponseEntity.noContent().build();
+        Optional<Users> user = userRepository.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            Post post = postRepository.findByIdAndUser(requestedId, user.get());
+            if (post != null) {
+                Post updatedPost = new Post(post.getId(), postUpdateRequest.getTitle(), postUpdateRequest.getBody(), user.get(), post.getCreatedDate(), Instant.now());
+                postRepository.save(updatedPost);
+                return ResponseEntity.noContent().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{requestedId}")
     private ResponseEntity<Void> deletePost(@PathVariable UUID requestedId, Principal principal) {
-        if (postRepository.existsByIdAndOwner(requestedId, principal.getName())) {
-            postRepository.deleteById(requestedId);
-            return ResponseEntity.noContent().build();
+        Optional<Users> user = userRepository.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            if (postRepository.existsByIdAndUser(requestedId, user.get())) {
+                postRepository.deleteById(requestedId);
+                return ResponseEntity.noContent().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }

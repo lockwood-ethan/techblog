@@ -1,90 +1,68 @@
 package com.spring.techblog.controllers;
 
-import com.spring.techblog.dtos.RegistrationRequest;
-import com.spring.techblog.jwt.JwtUtils;
-import com.spring.techblog.jwt.LoginResponse;
-import com.spring.techblog.models.Authorities;
+import com.spring.techblog.models.ERole;
+import com.spring.techblog.models.Role;
 import com.spring.techblog.models.Users;
-import com.spring.techblog.repositories.AuthoritiesRepository;
+import com.spring.techblog.payload.request.RegistrationRequest;
+import com.spring.techblog.payload.response.MessageResponse;
+import com.spring.techblog.repositories.RoleRepository;
 import com.spring.techblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.sql.DataSource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @RestController
 public class RegistrationController {
-
     @Autowired
-    DataSource dataSource;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    private final AuthoritiesRepository authoritiesRepository;
+    PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    public RegistrationController(AuthoritiesRepository authoritiesRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtils jwtUtils) {
-        this.authoritiesRepository = authoritiesRepository;
+    public RegistrationController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest) {
         if (userRepository.existsByUsername(registrationRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Error: Username is already in use.");
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        Users user = new Users(registrationRequest.getUsername(), passwordEncoder.encode(registrationRequest.getPassword()), true);
-        Authorities authorities = new Authorities(registrationRequest.getUsername(), "USER");
+        Users user = new Users(null,
+                registrationRequest.getUsername(),
+                passwordEncoder.encode(registrationRequest.getPassword()),
+                true);
 
-        UserDetails userDetails = User.withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(authorities.getAuthority())
-                .build();
+        Set<String> strRoles = registrationRequest.getRole();
+        Set<Role> roles = new HashSet<>();
 
-        JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-        userDetailsManager.createUser(userDetails);
-        Authentication authentication;
-        try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(registrationRequest.getUsername(), registrationRequest.getPassword()));
-        } catch (AuthenticationException exception) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("message", "Error: " + exception.getMessage());
-            error.put("status", false);
-            return new ResponseEntity<Object>(error, HttpStatus.NOT_FOUND);
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
         }
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwtAccessToken= jwtUtils.generateAccessTokenFromUsername(userDetails.getUsername());
-        String jwtRefreshToken = jwtUtils.generateRefreshTokenFromUsername(userDetails.getUsername());
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        LoginResponse response = new LoginResponse(userDetails.getUsername(), roles, jwtAccessToken, jwtRefreshToken);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        user.setRoles(roles);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }

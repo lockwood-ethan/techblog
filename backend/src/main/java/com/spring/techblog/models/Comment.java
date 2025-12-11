@@ -32,15 +32,17 @@ public class Comment {
     private Instant lastModifiedDate;
 
     @CreatedBy
-    private String owner;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     protected Comment() {}
 
-    public Comment(UUID id, Post post, String commentBody, String owner, Instant createdDate, Instant lastModifiedDate) {
+    public Comment(UUID id, Post post, String commentBody, Users user, Instant createdDate, Instant lastModifiedDate) {
         this.id = id;
         this.post = post;
         this.commentBody = commentBody;
-        this.owner = owner;
+        this.user = user;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
     }
@@ -85,11 +87,11 @@ public class Comment {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public String getOwner() {
-        return owner;
+    public Users getUser() {
+        return user;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setUser(Users user) {
+        this.user = user;
     }
 }

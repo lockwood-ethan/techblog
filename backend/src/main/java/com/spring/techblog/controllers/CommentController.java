@@ -2,8 +2,10 @@ package com.spring.techblog.controllers;
 
 import com.spring.techblog.models.Comment;
 import com.spring.techblog.models.Post;
+import com.spring.techblog.models.Users;
 import com.spring.techblog.repositories.CommentRepository;
 import com.spring.techblog.repositories.PostRepository;
+import com.spring.techblog.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +27,12 @@ public class CommentController {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public CommentController(CommentRepository commentRepository, PostRepository postRepository) {
+    public CommentController(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/comment/{requestedId}")
@@ -59,8 +63,8 @@ public class CommentController {
     }
 
     @PostMapping("/comment")
-    private ResponseEntity<Void> createComment(@RequestBody Comment newCommentRequest, UriComponentsBuilder ucb, Principal principal) {
-        Comment commentWithOwner = new Comment(null, newCommentRequest.getPost(), newCommentRequest.getCommentBody(), principal.getName(), Instant.now(), Instant.now());
+    private ResponseEntity<Void> createComment(@RequestBody Comment newCommentRequest, UriComponentsBuilder ucb, Users user, Principal principal) {
+        Comment commentWithOwner = new Comment(null, newCommentRequest.getPost(), newCommentRequest.getCommentBody(), user, Instant.now(), Instant.now());
         Comment savedComment = commentRepository.save(commentWithOwner);
         URI locationOfNewComment = ucb
                 .path("/comments/comment/{id}")
@@ -71,21 +75,26 @@ public class CommentController {
 
     @PutMapping("/comment/{requestedId}")
     private ResponseEntity<Void> updateComment(@PathVariable UUID requestedId, @RequestBody Comment commentUpdateRequest, Principal principal) {
-        Comment comment = commentRepository.findCommentByIdAndOwner(requestedId, principal.getName());
-        if (comment != null) {
-            Comment updatedComment = new Comment(comment.getId(), comment.getPost(), commentUpdateRequest.getCommentBody(), principal.getName(), comment.getCreatedDate(), Instant.now());
-            commentRepository.save(updatedComment);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        Optional<Users> user = userRepository.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            Comment comment = commentRepository.findCommentByIdAndUser(requestedId, user.get());
+            if (comment != null) {
+                Comment updatedComment = new Comment(comment.getId(), comment.getPost(), commentUpdateRequest.getCommentBody(), user.get(), comment.getCreatedDate(), Instant.now());
+                commentRepository.save(updatedComment);
+                return ResponseEntity.noContent().build();
+            }
         }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/comment/{requestedId}")
     private ResponseEntity<Void> deleteComment(@PathVariable UUID requestedId, Principal principal) {
-        if (commentRepository.existsByIdAndOwner(requestedId, principal.getName())) {
-            commentRepository.deleteById(requestedId);
-            return ResponseEntity.noContent().build();
+        Optional<Users> user = userRepository.findByUsername(principal.getName());
+        if (user.isPresent()) {
+            if (commentRepository.existsByIdAndUser(requestedId, user.get())) {
+                commentRepository.deleteById(requestedId);
+                return ResponseEntity.noContent().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }

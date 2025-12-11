@@ -2,6 +2,7 @@ package com.spring.techblog.repositories;
 
 import com.spring.techblog.models.Comment;
 import com.spring.techblog.models.Post;
+import com.spring.techblog.models.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
     Page<Comment> findAllByPostId(UUID postId, PageRequest pageRequest);
 
-    boolean existsByIdAndOwner(UUID id, String owner);
+    boolean existsByIdAndUser(UUID id, Users user);
 
-    Comment findCommentByIdAndOwner(UUID id, String owner);
+    Comment findCommentByIdAndUser(UUID id, Users user);
 }

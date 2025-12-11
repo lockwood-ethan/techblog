@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 
 function SignInButton() {
 
@@ -8,6 +8,8 @@ function SignInButton() {
     const [password, setPassword] = useState("");
 
     const [showLogIn, setShowLogIn] = useState(true);
+    const [data, setData] = useState(null);
+   
 
     const handleClick = () => {
         setShowLogIn(!showLogIn)
@@ -18,23 +20,19 @@ function SignInButton() {
         const postBody = { 
             "username": username,
             "password": password
-         }
-
-        await fetch(loginUrl, {
+        }
+    
+        const response = await fetch(loginUrl, {
             method: 'POST',
             body: JSON.stringify(postBody),
             headers: {'Content-type': 'application/json'}
-        })
-        .then(response => {
-            console.log(response.body);
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(err => {
-            console.log(err.message);
-        })
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setData(result);
+
     };
 
     const handleSubmit = (e) => {

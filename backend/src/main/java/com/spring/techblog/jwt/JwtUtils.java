@@ -1,14 +1,18 @@
 package com.spring.techblog.jwt;
 
+import com.spring.techblog.models.Users;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.io.Serializable;
@@ -29,28 +33,49 @@ public class JwtUtils implements Serializable {
     @Value("${spring.app.jwtRefreshExpirationMs}")
     private int jwtRefreshExpirationMs;
 
-    public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
+    @Value("${spring.app.jwtCookieName}")
+    private String jwtCookie;
+
+    @Value("${spring.app.jwtRefreshCookieName}")
+    private String jwtRefreshCookie;
+
+    public ResponseCookie generateJwtAccessCookie(UserDetails userDetails) {
+        String jwtAccessToken = generateTokenFromUsername(userDetails.getUsername());
+        return generateCookie(jwtCookie, jwtAccessToken, "/");
     }
 
-    public String generateAccessTokenFromUsername(String username) {
+    public ResponseCookie generateJwtAccessCookie(Users user) {
+        String jwtAccessToken = generateTokenFromUsername(user.getUsername());
+        return generateCookie(jwtCookie, jwtAccessToken, "/");
+    }
+
+    public ResponseCookie generateJwtRefreshCookie(String refreshToken) {
+        return generateCookie(jwtRefreshCookie, refreshToken, "/auth/refresh");
+    }
+
+    public String getJwtFromCookies(HttpServletRequest request) {
+        return getCookieValueByName(request, jwtCookie);
+    }
+
+    public String getJwtRefreshFromCookies(HttpServletRequest request) {
+        return getCookieValueByName(request, jwtRefreshCookie);
+    }
+
+    public ResponseCookie getCleanJwtCookie() {
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/auth/refresh").build();
+        return cookie;
+    }
+
+    public ResponseCookie getCleanJwtRefreshCookie() {
+        ResponseCookie cookie = ResponseCookie.from(jwtRefreshCookie, null).path("/auth/refresh").build();
+        return cookie;
+    }
+
+    public String generateTokenFromUsername(String username) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtAccessExpirationMs))
-                .signWith(key())
-                .compact();
-    }
-
-    public String generateRefreshTokenFromUsername(String username) {
-        return Jwts.builder()
-                .subject(username)
-                .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtRefreshExpirationMs))
                 .signWith(key())
                 .compact();
     }
@@ -81,5 +106,19 @@ public class JwtUtils implements Serializable {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
+    }
+
+    private ResponseCookie generateCookie(String name, String value, String path) {
+        ResponseCookie cookie = ResponseCookie.from(name, value).path(path).maxAge(jwtRefreshExpirationMs).httpOnly(true).build();
+        return cookie;
+    }
+
+    private String getCookieValueByName(HttpServletRequest request, String name) {
+        Cookie cookie = WebUtils.getCookie(request, name);
+        if (cookie != null) {
+            return cookie.getValue();
+        } else {
+            return null;
+        }
     }
 }
