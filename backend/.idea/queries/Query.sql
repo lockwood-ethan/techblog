@@ -1,0 +1,1 @@
+select * from refresh_token;

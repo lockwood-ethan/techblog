@@ -3,7 +3,6 @@ package com.spring.techblog.services;
 import com.spring.techblog.exceptions.TokenRefreshException;
 import com.spring.techblog.models.RefreshToken;
 import com.spring.techblog.models.Users;
-import com.spring.techblog.payload.response.MessageResponse;
 import com.spring.techblog.repositories.RefreshTokenRepository;
 import com.spring.techblog.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -49,7 +48,8 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public int deleteByUser(UUID userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+    public void deleteByUser(Users user) {
+        refreshTokenRepository.deleteByUser_Id(user.getId());
     }
+
 }

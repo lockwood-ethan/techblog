@@ -8,7 +8,6 @@ function SignInButton() {
     const [password, setPassword] = useState("");
 
     const [showLogIn, setShowLogIn] = useState(true);
-    const [data, setData] = useState(null);
    
 
     const handleClick = () => {
@@ -25,13 +24,13 @@ function SignInButton() {
         const response = await fetch(loginUrl, {
             method: 'POST',
             body: JSON.stringify(postBody),
-            headers: {'Content-type': 'application/json'}
+            headers: {'Content-type': 'application/json'},
+            credentials: 'include'
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const result = await response.json();
-        setData(result);
+        console.log(response.headers.get('Set-Cookie'));
 
     };
 

@@ -39,18 +39,21 @@ public class JwtUtils implements Serializable {
     @Value("${spring.app.jwtRefreshCookieName}")
     private String jwtRefreshCookie;
 
+    @Value("${spring.app.cookieDomain}")
+    private String cookieDomain;
+
     public ResponseCookie generateJwtAccessCookie(UserDetails userDetails) {
         String jwtAccessToken = generateTokenFromUsername(userDetails.getUsername());
-        return generateCookie(jwtCookie, jwtAccessToken, "/");
+        return generateCookie(jwtCookie, jwtAccessToken);
     }
 
     public ResponseCookie generateJwtAccessCookie(Users user) {
         String jwtAccessToken = generateTokenFromUsername(user.getUsername());
-        return generateCookie(jwtCookie, jwtAccessToken, "/");
+        return generateCookie(jwtCookie, jwtAccessToken);
     }
 
     public ResponseCookie generateJwtRefreshCookie(String refreshToken) {
-        return generateCookie(jwtRefreshCookie, refreshToken, "/auth/refresh");
+        return generateCookie(jwtRefreshCookie, refreshToken);
     }
 
     public String getJwtFromCookies(HttpServletRequest request) {
@@ -62,12 +65,12 @@ public class JwtUtils implements Serializable {
     }
 
     public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/auth/refresh").build();
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/").build();
         return cookie;
     }
 
     public ResponseCookie getCleanJwtRefreshCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtRefreshCookie, null).path("/auth/refresh").build();
+        ResponseCookie cookie = ResponseCookie.from(jwtRefreshCookie, null).path("/").build();
         return cookie;
     }
 
@@ -108,8 +111,15 @@ public class JwtUtils implements Serializable {
         return false;
     }
 
-    private ResponseCookie generateCookie(String name, String value, String path) {
-        ResponseCookie cookie = ResponseCookie.from(name, value).path(path).maxAge(jwtRefreshExpirationMs).httpOnly(true).build();
+    private ResponseCookie generateCookie(String name, String value) {
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .domain(cookieDomain)
+                .maxAge(jwtRefreshExpirationMs)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .build();
         return cookie;
     }
 

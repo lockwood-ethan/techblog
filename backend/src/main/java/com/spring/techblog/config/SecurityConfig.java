@@ -40,9 +40,6 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Autowired
-    DataSource dataSource;
-
-    @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
@@ -72,7 +69,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                 .requestMatchers(HttpMethod.GET, "/posts", "/posts/**", "/comments/**", "/comments/comment/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/register", "/auth/login", "/auth/refresh", "/auth/logout").permitAll()
@@ -98,9 +95,10 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
