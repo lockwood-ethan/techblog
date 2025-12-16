@@ -4,6 +4,7 @@ import AboutCard from './AboutCard/AboutCard.jsx'
 import LogoutButton from './Buttons/LogOutButton.jsx';
 
 function Home() {
+
     return(
         <>
             <Navbar />

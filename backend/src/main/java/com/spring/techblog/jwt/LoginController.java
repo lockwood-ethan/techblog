@@ -46,6 +46,7 @@ public class LoginController {
 
     @Value("${spring.app.jwtRefreshCookieName}")
     private String jwtRefreshCookie;
+
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
@@ -82,11 +83,12 @@ public class LoginController {
                 .body(new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.isEnabled(),
-                        roles));
+                        roles
+                ));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+    public ResponseEntity<?> logoutUser(@RequestBody HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -115,7 +117,7 @@ public class LoginController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+    public ResponseEntity<?> refreshToken(@RequestBody HttpServletRequest request) {
         String token = jwtUtils.getJwtRefreshFromCookies(request);
 
         if ((token != null) && (token.length() > 0)) {

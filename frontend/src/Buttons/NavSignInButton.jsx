@@ -1,57 +1,15 @@
-import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SignInButton() {
 
-    const loginUrl = import.meta.env.VITE_LOGIN_URL;
+    const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
-    const [showLogIn, setShowLogIn] = useState(true);
-   
-
-    const handleClick = () => {
-        setShowLogIn(!showLogIn)
-    };
-
-    const authenticateUsername = async (username, password) => {
-
-        const postBody = { 
-            "username": username,
-            "password": password
-        }
-    
-        const response = await fetch(loginUrl, {
-            method: 'POST',
-            body: JSON.stringify(postBody),
-            headers: {'Content-type': 'application/json'},
-            credentials: 'include'
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log(response.headers.get('Set-Cookie'));
-
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        authenticateUsername(username, password);
-    };
+    const redirectToSignIn = () => {
+        navigate("/signin");
+    }
 
     return(
-        <>
-            { showLogIn ? 
-                <button id="navSignInButton" onClick={(e) => handleClick(e)}
-                className="btn btn-outline-light text-light text-nowrap me-2">Sign In</button> :
-            <> 
-                <form className="d-inline-flex" onSubmit={handleSubmit}>
-                    <button type="submit" id="navSubmitButton" className="btn btn-outline-light text-light mx-2">Submit</button>
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} id="navUsernameTextBox" className="form-control text-light" type="text" placeholder="Username" autoComplete="username"></input>
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} id="navPasswordTextBox" className="form-control text-light mx-2" type="password" placeholder="Password" autoComplete="current-password"></input>
-                </form>
-            </> }
-        </>
+        <button id="navSignInButton" onClick={redirectToSignIn} className="btn btn-outline-light text-light text-nowrap me-2">Sign In</button>
     );
 }
 

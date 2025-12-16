@@ -1,5 +1,6 @@
 import './Navbar.css'
 import SignInButton from '../Buttons/NavSignInButton';
+import RegisterButton from '../Buttons/NavRegisterButton';
 
 function Navbar() {
     return(
@@ -15,7 +16,7 @@ function Navbar() {
                 <div className="col"></div>
                 <div className="col-md-auto">
                     <SignInButton />
-                    <button id="navRegisterButton" className="btn btn-outline-light text-light me-5">Register</button>
+                    <RegisterButton />
                 </div>
                 <div className="col-md-auto">
                     <form className="d-flex" role="search">
