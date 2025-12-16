@@ -6,7 +6,7 @@ const handleTokenRefresh = async () => {
         credentials: "include"
     });
     if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error("Error: " + response.statusText);
     }
 }
 
