@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-function SignInButton() {
+function NavSignInButton() {
 
     const navigate = useNavigate();
 
@@ -13,4 +13,4 @@ function SignInButton() {
     );
 }
 
-export default SignInButton
+export default NavSignInButton

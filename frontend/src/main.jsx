@@ -5,7 +5,9 @@ import Home from './Home.jsx'
 import SignInPage from './SignInPage.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-import RegistrationPage from "./RegistrationPage.jsx";
+import RegistrationPage from "./RegistrationPage.jsx"
+
+// TODO: Figure out how to handle refreshing a token without breaking absolutely everything
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
