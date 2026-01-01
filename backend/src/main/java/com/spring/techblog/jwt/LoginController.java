@@ -87,6 +87,7 @@ public class LoginController {
                 ));
     }
 
+    // This is causing an infinite loop.
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser(@RequestBody HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -116,6 +117,7 @@ public class LoginController {
                 .body(new MessageResponse("Logged out successfully"));
     }
 
+    // This is not working correctly yet.
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody HttpServletRequest request) {
         String token = jwtUtils.getJwtRefreshFromCookies(request);
